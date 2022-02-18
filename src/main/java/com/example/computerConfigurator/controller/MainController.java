@@ -3,6 +3,7 @@ package com.example.computerConfigurator.controller;
 import com.example.computerConfigurator.blocks.*;
 import com.example.computerConfigurator.repository.CpuRepository;
 import com.example.computerConfigurator.repository.MbRepository;
+import com.example.computerConfigurator.repository.RamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,8 @@ public class MainController {
     private MbRepository mbRepository;
     @Autowired
     private CpuRepository cpuRepository;
+    @Autowired
+    private RamRepository ramRepository;
 
     @GetMapping
     public String getAllComponent(Model model) {
@@ -47,5 +50,11 @@ public class MainController {
     public String addCpu(@ModelAttribute Cpu cpu) {
         cpuRepository.save(cpu);
         return "redirect:/addcomponents#cpu";
+    }
+
+    @PostMapping("addRam")
+    public  String addRam(@ModelAttribute Ram ram) {
+        ramRepository.save(ram);
+        return "redirect:/addcomponents#ram";
     }
 }

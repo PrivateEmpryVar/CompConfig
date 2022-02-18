@@ -63,8 +63,28 @@
             </tr>
         </table>
     </div>
+
     <div  id="ram">
-<!--        TODO: RAM add form append-->
+        <form method="post" action="/addcomponents/addRam" th:object="${ram}">
+            <select name="ramType">
+                <option th:each="r: ${ramType}" th:value="${r}" th:text="${r}" />
+            </select><br>
+            <div th:replace="fragments/manufacturer :: form" />
+            <input type="submit" value="add RAM">
+        </form>
+
+        <table class="modules">
+            <tr>
+                <th>Ram type</th>
+                <div th:replace="fragments/manufacturer :: tableTh" />
+                <th>remove</th>
+            </tr>
+            <tr th:each="r: ${ramList}">
+                <td th:text="${r.ramType}" />
+                <span th:replace="fragments/manufacturer :: table(r = ${ram})" />
+                <td><a th:href="@{/addcomponents/delRam(id=${r.id})}"> del </a> </td>
+            </tr>
+        </table>
     </div>
     <div class="tabs__links">
         <a href="#motherboard">Материнская плата</a>
