@@ -7,6 +7,7 @@
     <link href="css/form.css" rel="stylesheet">
     <link href="css/table.css" rel="stylesheet">
 </head>
+
 <body>
 <div th:replace="fragments/head :: navigations"/>
 <h1>Добавление модулей</h1>
@@ -19,7 +20,7 @@
             <div th:replace="fragments/types :: module(name = 'ramType', values = ${ramTypes})" />
             <div th:replace="fragments/types :: module(name = 'hddType', values = ${hddTypes})" />
             <div th:replace="fragments/manufacturer :: form" />
-            <input type="submit" value="add">
+            <input type="submit" value="add CPU">
         </form>
 
         <table class="modules">
@@ -66,9 +67,8 @@
 
     <div  id="ram">
         <form method="post" action="/addcomponents/addRam" th:object="${ram}">
-            <select name="ramType">
-                <option th:each="r: ${ramType}" th:value="${r}" th:text="${r}" />
-            </select><br>
+            <div th:replace="fragments/types :: module(name = 'ramType', values = ${ramTypes})"/>
+            <input placeholder="size Gb" type="text" th:name="size"><br>
             <div th:replace="fragments/manufacturer :: form" />
             <input type="submit" value="add RAM">
         </form>
@@ -81,15 +81,99 @@
             </tr>
             <tr th:each="r: ${ramList}">
                 <td th:text="${r.ramType}" />
-                <span th:replace="fragments/manufacturer :: table(r = ${ram})" />
+                <span th:replace="fragments/manufacturer :: table(m = ${r})" />
                 <td><a th:href="@{/addcomponents/delRam(id=${r.id})}"> del </a> </td>
             </tr>
         </table>
     </div>
+
+    <div id="gpu">
+        <form method="post" action="/addcomponents/addGpu" th:object="${gpu}">
+            <input type="submit" value="Add GPU">
+        </form>
+
+        <table class="modules">
+            <tr>
+                <th>FormFactor</th>
+                <th>Cpu socket</th>
+                <th>Ram type</th>
+                <th>Hdd type</th>
+                <div th:replace="fragments/manufacturer :: tableTh" />
+                <th>remove</th>
+            </tr>
+            <tr th:each="g: ${motherboards}">
+                <td th:text="${g.caseFormFactor}" />
+                <td th:text="${g.cpuSocket}" />
+                <td th:text="${g.ramType}" />
+                <td th:text="${g.hddType}" />
+                <span th:replace="fragments/manufacturer :: table(m = ${g})" />
+                <td><a th:href="@{/addcomponents/delMotherboard(id=${g.id})}"> del </a> </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="hdd">
+        <form method="post" action="/addcomponents/addHdd" th:object="${hdd}">
+            <div th:replace="fragments/types :: module(name = 'hddType', values = ${hddTypes})"/>
+            <input placeholder="size Gb" type="text" th:name="size"><br>
+            <div th:replace="fragments/manufacturer :: form" />
+            <input type="submit" value="add HDD">
+        </form>
+
+        <table class="modules">
+            <tr>
+                <th>FormFactor</th>
+                <th>Cpu socket</th>
+                <th>Ram type</th>
+                <th>Hdd type</th>
+                <div th:replace="fragments/manufacturer :: tableTh" />
+                <th>remove</th>
+            </tr>
+            <tr th:each="h: ${hdd}">
+                <td th:text="${h.hddType}" />
+                <span th:replace="fragments/manufacturer :: table(m = ${h})" />
+                <td><a th:href="@{/addcomponents/delHdd(id=${h.id})}"> del </a> </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="sblock">
+        <form method="post" action="/addcomponents/sblock" th:object="${sblock}">
+            <div th:replace="fragments/types :: module(name ='caseFormFactor', values = ${caseFormsFactor})" />
+            <div th:replace="fragments/types :: module(name = 'cpuSocket', values = ${cpuSockets})" />
+            <div th:replace="fragments/types :: module(name = 'ramType', values = ${ramTypes})" />
+            <div th:replace="fragments/types :: module(name = 'hddType', values = ${hddTypes})" />
+            <div th:replace="fragments/manufacturer :: form" />
+            <input type="submit" value="add System Block">
+        </form>
+
+        <table class="modules">
+            <tr>
+                <th>FormFactor</th>
+                <th>Cpu socket</th>
+                <th>Ram type</th>
+                <th>Hdd type</th>
+                <div th:replace="fragments/manufacturer :: tableTh" />
+                <th>remove</th>
+            </tr>
+            <tr th:each="s: ${motherboards}">
+                <td th:text="${s.caseFormFactor}" />
+                <td th:text="${s.cpuSocket}" />
+                <td th:text="${s.ramType}" />
+                <td th:text="${s.hddType}" />
+                <span th:replace="fragments/manufacturer :: table(m = ${s})" />
+                <td><a th:href="@{/addcomponents/delMotherboard(id=${s.id})}"> del </a> </td>
+            </tr>
+        </table>
+    </div>
+
     <div class="tabs__links">
         <a href="#motherboard">Материнская плата</a>
         <a href="#cpu">Процессор</a>
         <a href="#ram">Оперативная память</a>
+        <a href="#ram">Видеокарта</a>
+        <a href="#ram">Жесткий диск</a>
+        <a href="#ram">Системный блок</a>
     </div>
 </div>
 

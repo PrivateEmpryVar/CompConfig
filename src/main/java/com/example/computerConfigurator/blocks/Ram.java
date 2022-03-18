@@ -17,5 +17,4 @@ public class Ram {
     private Manufacturer manufacturer;
     private RamType ramType;
     private int size;
-
 }

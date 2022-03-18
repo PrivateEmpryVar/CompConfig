@@ -2,7 +2,6 @@ package com.example.computerConfigurator.blocks;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 

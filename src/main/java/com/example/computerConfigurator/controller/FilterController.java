@@ -2,8 +2,10 @@ package com.example.computerConfigurator.controller;
 
 import com.example.computerConfigurator.blocks.Cpu;
 import com.example.computerConfigurator.blocks.MotherBoard;
+import com.example.computerConfigurator.blocks.Ram;
 import com.example.computerConfigurator.repository.CpuRepository;
 import com.example.computerConfigurator.repository.MbRepository;
+import com.example.computerConfigurator.repository.RamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,8 @@ public class FilterController {
     CpuRepository cpuRepository;
     @Autowired
     MbRepository mbRepository;
+    @Autowired
+    RamRepository ramRepository;
 
     @GetMapping
     public String getListElements(@RequestParam(defaultValue = "") String socket,
@@ -40,8 +44,13 @@ public class FilterController {
                 .filter(mb -> mb.getCpuSocket().name().contains(socket))
                 .filter(mb -> mb.getRamType().name().contains(ramType))
                 .collect(Collectors.toList());
+        List<Ram> ramList = StreamSupport
+                .stream(ramRepository.findAll().spliterator(), false)
+                .filter(ram -> ram.getRamType().name().contains(ramType))
+                .collect(Collectors.toList());
         model.addAttribute("cpuList", cpuList);
         model.addAttribute("mbList", mbList);
+        model.addAttribute("ramList", ramList);
         return "/filter";
     }
 }
