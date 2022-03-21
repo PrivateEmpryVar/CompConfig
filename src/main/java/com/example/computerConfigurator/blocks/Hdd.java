@@ -12,7 +12,7 @@ public class Hdd {
     @Id
     @GeneratedValue
     private int id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Manufacturer manufacturer;
     private HddType hddType;
     private int size;

@@ -13,7 +13,7 @@ public class Ram {
     @Id
     @GeneratedValue
     private int id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Manufacturer manufacturer;
     private RamType ramType;
     private int size;

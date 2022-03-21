@@ -1,10 +1,7 @@
 package com.example.computerConfigurator.controller;
 
 import com.example.computerConfigurator.blocks.*;
-import com.example.computerConfigurator.repository.CpuRepository;
-import com.example.computerConfigurator.repository.GpuRepository;
-import com.example.computerConfigurator.repository.MbRepository;
-import com.example.computerConfigurator.repository.RamRepository;
+import com.example.computerConfigurator.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +18,10 @@ public class MainController {
     private RamRepository ramRepository;
     @Autowired
     private GpuRepository gpuRepository;
+    @Autowired
+    private HddRepository hddRepository;
+    @Autowired
+    private CaseBlockRepository caseBlockRepository;
 
     @GetMapping
     public String getAllComponent(Model model) {
@@ -28,16 +29,58 @@ public class MainController {
         model.addAttribute("motherboards", mbRepository.findAll());
         model.addAttribute("ramList", ramRepository.findAll());
         model.addAttribute("gpuList", gpuRepository.findAll());
+        model.addAttribute("hddList", hddRepository.findAll());
+        model.addAttribute("gpuList", gpuRepository.findAll());
+        model.addAttribute("caseList", caseBlockRepository.findAll());
         model.addAttribute("ramTypes", RamType.values());
         model.addAttribute("cpuSockets", CpuSocket.values());
         model.addAttribute("caseFormsFactor", CaseFormFactor.values());
         model.addAttribute("hddTypes", HddType.values());
+        model.addAttribute("caseTypes", CaseFormFactor.values());
         model.addAttribute("cpu",
                 cpuRepository.findFirstByOrderByIdDesc().orElse(new Cpu()));
         model.addAttribute("mboard",
                 mbRepository.findFirstByOrderByIdDesc().orElse(new MotherBoard()));
         model.addAttribute("ram", ramRepository.findFirstByOrderByIdDesc().orElse(new Ram()));
+        model.addAttribute("hdd", hddRepository.findFirstByOrderByIdDesc().orElse(new Hdd()));
+        model.addAttribute("caseBlock", caseBlockRepository.findFirstByOrderByIdDesc().orElse(new CaseBlock()));
         return "addcomponents";
+    }
+
+    @PostMapping("addCase")
+    public String addCase(@ModelAttribute CaseBlock caseBlock) {
+        caseBlockRepository.save(caseBlock);
+        return "redirect:/addcomponents#case";
+    }
+
+    @GetMapping("delCase")
+    public String dellCase(@RequestParam int id) {
+        caseBlockRepository.delete(caseBlockRepository.findById(id).get());
+        return "redirect:/addcomponents#case";
+    }
+
+    @PostMapping("addGpu")
+    public String addGpu(@ModelAttribute VideoCard videoCard) {
+        gpuRepository.save(videoCard);
+        return "redirect:/addcomponents#gpu";
+    }
+
+    @GetMapping("delGpu")
+    public String dellGpu(@RequestParam int id) {
+        gpuRepository.delete(gpuRepository.findById(id).get());
+        return "redirect:/addcomponents#gpu";
+    }
+
+    @PostMapping("addHdd")
+    public String addHdd(@ModelAttribute Hdd hdd) {
+        hddRepository.save(hdd);
+        return "redirect:/addcomponents#hdd";
+    }
+
+    @GetMapping("delHdd")
+    public String dellHdd(@RequestParam int id) {
+        hddRepository.delete(hddRepository.findById(id).get());
+        return "redirect:/addcomponents#hdd";
     }
 
     @PostMapping("addMb")

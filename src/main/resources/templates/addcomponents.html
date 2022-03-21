@@ -87,31 +87,6 @@
         </table>
     </div>
 
-    <div id="gpu">
-        <form method="post" action="/addcomponents/addGpu" th:object="${gpu}">
-            <input type="submit" value="Add GPU">
-        </form>
-
-        <table class="modules">
-            <tr>
-                <th>FormFactor</th>
-                <th>Cpu socket</th>
-                <th>Ram type</th>
-                <th>Hdd type</th>
-                <div th:replace="fragments/manufacturer :: tableTh" />
-                <th>remove</th>
-            </tr>
-            <tr th:each="g: ${motherboards}">
-                <td th:text="${g.caseFormFactor}" />
-                <td th:text="${g.cpuSocket}" />
-                <td th:text="${g.ramType}" />
-                <td th:text="${g.hddType}" />
-                <span th:replace="fragments/manufacturer :: table(m = ${g})" />
-                <td><a th:href="@{/addcomponents/delMotherboard(id=${g.id})}"> del </a> </td>
-            </tr>
-        </table>
-    </div>
-
     <div id="hdd">
         <form method="post" action="/addcomponents/addHdd" th:object="${hdd}">
             <div th:replace="fragments/types :: module(name = 'hddType', values = ${hddTypes})"/>
@@ -122,14 +97,11 @@
 
         <table class="modules">
             <tr>
-                <th>FormFactor</th>
-                <th>Cpu socket</th>
-                <th>Ram type</th>
                 <th>Hdd type</th>
                 <div th:replace="fragments/manufacturer :: tableTh" />
                 <th>remove</th>
             </tr>
-            <tr th:each="h: ${hdd}">
+            <tr th:each="h: ${hddList}">
                 <td th:text="${h.hddType}" />
                 <span th:replace="fragments/manufacturer :: table(m = ${h})" />
                 <td><a th:href="@{/addcomponents/delHdd(id=${h.id})}"> del </a> </td>
@@ -137,32 +109,41 @@
         </table>
     </div>
 
-    <div id="sblock">
-        <form method="post" action="/addcomponents/sblock" th:object="${sblock}">
-            <div th:replace="fragments/types :: module(name ='caseFormFactor', values = ${caseFormsFactor})" />
-            <div th:replace="fragments/types :: module(name = 'cpuSocket', values = ${cpuSockets})" />
-            <div th:replace="fragments/types :: module(name = 'ramType', values = ${ramTypes})" />
-            <div th:replace="fragments/types :: module(name = 'hddType', values = ${hddTypes})" />
+    <div id="gpu">
+        <form method="post" action="/addcomponents/addGpu" th:object="${gpu}">
+            <input placeholder="size Gb" type="text" th:name="size"><br>
             <div th:replace="fragments/manufacturer :: form" />
-            <input type="submit" value="add System Block">
+            <input type="submit" value="add GPU">
         </form>
 
         <table class="modules">
             <tr>
-                <th>FormFactor</th>
-                <th>Cpu socket</th>
-                <th>Ram type</th>
-                <th>Hdd type</th>
                 <div th:replace="fragments/manufacturer :: tableTh" />
                 <th>remove</th>
             </tr>
-            <tr th:each="s: ${motherboards}">
-                <td th:text="${s.caseFormFactor}" />
-                <td th:text="${s.cpuSocket}" />
-                <td th:text="${s.ramType}" />
-                <td th:text="${s.hddType}" />
-                <span th:replace="fragments/manufacturer :: table(m = ${s})" />
-                <td><a th:href="@{/addcomponents/delMotherboard(id=${s.id})}"> del </a> </td>
+            <tr th:each="g: ${gpuList}">
+                <span th:replace="fragments/manufacturer :: table(m = ${g})" />
+                <td><a th:href="@{/addcomponents/delGpu(id=${g.id})}"> del </a> </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="case">
+        <form method="post" action="/addcomponents/addCase" th:object="${case}">
+            <div th:replace="fragments/types :: module(name = 'caseType', values = ${caseTypes})"/>
+            <div th:replace="fragments/manufacturer :: form" />
+            <input type="submit" value="add Case">
+        </form>
+
+        <table class="modules">
+            <tr>
+                <div th:replace="fragments/manufacturer :: tableTh" />
+                <th>remove</th>
+            </tr>
+            <tr th:each="b: ${caseList}">
+                <td th:text="${b.CaseFormFactor}" />
+                <span th:replace="fragments/manufacturer :: table(m = ${b})" />
+                <td><a th:href="@{/addcomponents/delCase(id=${b.id})}"> del </a> </td>
             </tr>
         </table>
     </div>
@@ -171,9 +152,9 @@
         <a href="#motherboard">Материнская плата</a>
         <a href="#cpu">Процессор</a>
         <a href="#ram">Оперативная память</a>
-        <a href="#ram">Видеокарта</a>
-        <a href="#ram">Жесткий диск</a>
-        <a href="#ram">Системный блок</a>
+        <a href="#hdd">Жесткий диск</a>
+        <a href=#gpu>Видеокарта</a>
+        <a href=#case>Корпус</a>
     </div>
 </div>
 
