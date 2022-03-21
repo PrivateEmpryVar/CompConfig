@@ -129,19 +129,20 @@
     </div>
 
     <div id="case">
-        <form method="post" action="/addcomponents/addCase" th:object="${case}">
-            <div th:replace="fragments/types :: module(name = 'caseType', values = ${caseTypes})"/>
+        <form method="post" action="/addcomponents/addCase" th:object="${caseBlock}">
+            <div th:replace="fragments/types :: module(name = 'caseFormFactor', values = ${caseFormsFactor})"/>
             <div th:replace="fragments/manufacturer :: form" />
             <input type="submit" value="add Case">
         </form>
 
         <table class="modules">
             <tr>
+                <th>FormFactor</th>
                 <div th:replace="fragments/manufacturer :: tableTh" />
                 <th>remove</th>
             </tr>
             <tr th:each="b: ${caseList}">
-                <td th:text="${b.CaseFormFactor}" />
+                <td th:text="${b.caseFormFactor}" />
                 <span th:replace="fragments/manufacturer :: table(m = ${b})" />
                 <td><a th:href="@{/addcomponents/delCase(id=${b.id})}"> del </a> </td>
             </tr>
@@ -153,8 +154,8 @@
         <a href="#cpu">Процессор</a>
         <a href="#ram">Оперативная память</a>
         <a href="#hdd">Жесткий диск</a>
-        <a href=#gpu>Видеокарта</a>
-        <a href=#case>Корпус</a>
+        <a href="#gpu">Видеокарта</a>
+        <a href="#case">Корпус</a>
     </div>
 </div>
 
