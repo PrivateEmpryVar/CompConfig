@@ -28,7 +28,7 @@
                 <th>Cpu socket</th>
                 <th>Ram type</th>
                 <th>Hdd type</th>
-                <div th:replace="fragments/manufacturer :: tableTh" />
+                <span th:replace="fragments/manufacturer :: tableTh" />
                 <th>remove</th>
             </tr>
             <tr th:each="mb: ${motherboards}">
