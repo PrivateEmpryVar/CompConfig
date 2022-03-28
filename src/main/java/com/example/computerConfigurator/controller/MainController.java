@@ -41,7 +41,7 @@ public class MainController {
                 cpuRepository.findFirstByOrderByIdDesc().orElse(new Cpu()));
         model.addAttribute("mboard",
                 mbRepository.findFirstByOrderByIdDesc().orElse(new MotherBoard()));
-        model.addAttribute("ram", ramRepository.findFirstByOrderByIdDesc().orElse(new Ram()));
+        model.addAttribute("ram", new Ram());
         model.addAttribute("hdd", hddRepository.findFirstByOrderByIdDesc().orElse(new Hdd()));
         model.addAttribute("caseBlock", caseBlockRepository.findFirstByOrderByIdDesc().orElse(new CaseBlock()));
         return "addcomponents";
