@@ -1,5 +1,5 @@
 package com.example.computerConfigurator.blocks;
 
 public enum CaseFormFactor {
-    MiniITX, MicroATX, MiniATX, ATX
+    MINI_SITX, MICRO_ATX, MINI_ITX, ATX, E_ATX
 }

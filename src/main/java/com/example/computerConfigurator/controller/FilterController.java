@@ -1,11 +1,7 @@
 package com.example.computerConfigurator.controller;
 
-import com.example.computerConfigurator.blocks.Cpu;
-import com.example.computerConfigurator.blocks.MotherBoard;
-import com.example.computerConfigurator.blocks.Ram;
-import com.example.computerConfigurator.repository.CpuRepository;
-import com.example.computerConfigurator.repository.MbRepository;
-import com.example.computerConfigurator.repository.RamRepository;
+import com.example.computerConfigurator.blocks.*;
+import com.example.computerConfigurator.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,27 +26,79 @@ public class FilterController {
     MbRepository mbRepository;
     @Autowired
     RamRepository ramRepository;
+    @Autowired
+    HddRepository hddRepository;
+    @Autowired
+    GpuRepository gpuRepository;
+    @Autowired
+    CaseBlockRepository caseBlockRepository;
 
     @GetMapping
     public String getListElements(@RequestParam(defaultValue = "") String socket,
                                   @RequestParam(defaultValue = "") String ramType,
+                                  @RequestParam(defaultValue = "") String hddType,
+                                  @RequestParam(defaultValue = "") String caseFormFactor,
+                                  @RequestParam(defaultValue = "0") int cpuId,
+                                  @RequestParam(defaultValue = "0") int ramId,
+                                  @RequestParam(defaultValue = "0") int mbId,
+                                  @RequestParam(defaultValue = "0") int hddId,
+                                  @RequestParam(defaultValue = "0") int gpuId,
+                                  @RequestParam(defaultValue = "0") int caseBlockId,
                                   Model model) {
+        ArrayList<Integer> sum = new ArrayList<>();
         List<Cpu> cpuList = StreamSupport
                 .stream(cpuRepository.findAll().spliterator(), false)
                 .filter(cpu -> cpu.getCpuSocket().name().contains(socket))
+                .filter(cpu -> cpuId == 0 || cpu.getId() == cpuId)
+                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         List<MotherBoard> mbList = StreamSupport
                 .stream(mbRepository.findAll().spliterator(), false)
                 .filter(mb -> mb.getCpuSocket().name().contains(socket))
                 .filter(mb -> mb.getRamType().name().contains(ramType))
+                .filter(mb -> mb.getHddType().name().contains(hddType))
+                .filter(mb -> mb.getCaseFormFactor().name().contains(caseFormFactor))
+                .filter(mb -> mbId == 0 || mb.getId() == mbId)
+                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         List<Ram> ramList = StreamSupport
                 .stream(ramRepository.findAll().spliterator(), false)
                 .filter(ram -> ram.getRamType().name().contains(ramType))
+                .filter(r -> ramId == 0|| r.getId() == ramId)
+                .peek(p -> sum.add(p.getManufacturer().getPrice()))
+                .collect(Collectors.toList());
+        List<Hdd> hddList = StreamSupport
+                .stream(hddRepository.findAll().spliterator(), false)
+                .filter(hdd -> hdd.getHddType().name().contains(hddType))
+                .filter(hdd -> hddId == 0 || hdd.getId() == hddId)
+                .peek(p -> sum.add(p.getManufacturer().getPrice()))
+                .collect(Collectors.toList());
+        List<VideoCard> gpuList = StreamSupport
+                .stream(gpuRepository.findAll().spliterator(), false)
+                .filter(videoCard -> gpuId == 0 || videoCard.getId() == gpuId)
+                .peek(p -> sum.add(p.getManufacturer().getPrice()))
+                .collect(Collectors.toList());
+        List<CaseBlock> caseList = StreamSupport
+                .stream(caseBlockRepository.findAll().spliterator(), false)
+                .filter(caseBlock -> caseBlockId == 0 || caseBlock.getId() == caseBlockId)
+                .filter(caseBlock -> caseBlock.getCaseFormFactor().name().contains(caseFormFactor))
+                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         model.addAttribute("cpuList", cpuList);
         model.addAttribute("mbList", mbList);
         model.addAttribute("ramList", ramList);
+        model.addAttribute("hddList", hddList);
+        model.addAttribute("gpuList", gpuList);
+        model.addAttribute("caseList", caseList);
+        model.addAttribute("socket", socket);
+        model.addAttribute("ramType", ramType);
+        model.addAttribute("hddType", hddType);
+        model.addAttribute("cpuId", cpuId);
+        model.addAttribute("ramId", ramId);
+        model.addAttribute("mbId", mbId);
+        model.addAttribute("hddId", hddId);
+        model.addAttribute("gpuId", gpuId);
+        model.addAttribute("sumOrder", sum.stream().mapToInt(Integer::valueOf).sum());
         return "/filter";
     }
 }
