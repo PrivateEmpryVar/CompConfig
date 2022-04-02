@@ -56,7 +56,7 @@ public class FilterController {
                 .stream(mbRepository.findAll().spliterator(), false)
                 .filter(mb -> mb.getCpuSocket().name().contains(socket))
                 .filter(mb -> mb.getRamType().name().contains(ramType))
-                .filter(mb -> mb.getHddType().name().contains(hddType))
+                .filter(mb -> hddType.startsWith(mb.getHddType().name()) || mb.getHddType().name().contains(hddType))
                 .filter(mb -> mb.getCaseFormFactor().name().contains(caseFormFactor))
                 .filter(mb -> mbId == 0 || mb.getId() == mbId)
                 .peek(p -> sum.add(p.getManufacturer().getPrice()))
@@ -98,6 +98,7 @@ public class FilterController {
         model.addAttribute("mbId", mbId);
         model.addAttribute("hddId", hddId);
         model.addAttribute("gpuId", gpuId);
+        model.addAttribute("caseBlockId", caseBlockId);
         model.addAttribute("sumOrder", sum.stream().mapToInt(Integer::valueOf).sum());
         return "/filter";
     }

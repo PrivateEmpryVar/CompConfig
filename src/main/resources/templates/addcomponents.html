@@ -15,11 +15,11 @@
 <div class="tabs">
     <div id="motherboard">
         <form method="post" action="/addcomponents/addMb" th:object="${mboard}">
-            <div th:replace="fragments/types :: module(name ='caseFormFactor', values = ${caseFormsFactor})" />
-            <div th:replace="fragments/types :: module(name = 'cpuSocket', values = ${cpuSockets})" />
-            <div th:replace="fragments/types :: module(name = 'ramType', values = ${ramTypes})" />
-            <div th:replace="fragments/types :: module(name = 'hddType', values = ${hddTypes})" />
-            <div th:replace="fragments/manufacturer :: form" />
+            <span th:replace="fragments/types :: module(name ='caseFormFactor', values = ${caseFormsFactor})" />
+            <span th:replace="fragments/types :: module(name = 'cpuSocket', values = ${cpuSockets})" />
+            <span th:replace="fragments/types :: module(name = 'ramType', values = ${ramTypes})" />
+            <span th:replace="fragments/types :: module(name = 'hddType', values = ${hddTypes})" />
+            <span th:replace="fragments/manufacturer :: form" />
             <input type="submit" value="Добавить мат. плату">
         </form>
 
