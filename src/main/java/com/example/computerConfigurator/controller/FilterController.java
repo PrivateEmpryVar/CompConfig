@@ -3,6 +3,7 @@ package com.example.computerConfigurator.controller;
 import com.example.computerConfigurator.blocks.*;
 import com.example.computerConfigurator.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
@@ -45,12 +47,17 @@ public class FilterController {
                                   @RequestParam(defaultValue = "0") int gpuId,
                                   @RequestParam(defaultValue = "0") int caseBlockId,
                                   Model model) {
-        ArrayList<Integer> sum = new ArrayList<>();
+        List<Integer> priceList = new ArrayList<>();
+        cpuRepository.findById(cpuId).ifPresent(c -> priceList.add(c.getManufacturer().getPrice()));
+        ramRepository.findById(ramId).ifPresent(c -> priceList.add(c.getManufacturer().getPrice()));
+        mbRepository.findById(mbId).ifPresent(c -> priceList.add(c.getManufacturer().getPrice()));
+        hddRepository.findById(hddId).ifPresent(c -> priceList.add(c.getManufacturer().getPrice()));
+        gpuRepository.findById(gpuId).ifPresent(c -> priceList.add(c.getManufacturer().getPrice()));
+        caseBlockRepository.findById(caseBlockId).ifPresent(c -> priceList.add(c.getManufacturer().getPrice()));
         List<Cpu> cpuList = StreamSupport
                 .stream(cpuRepository.findAll().spliterator(), false)
                 .filter(cpu -> cpu.getCpuSocket().name().contains(socket))
                 .filter(cpu -> cpuId == 0 || cpu.getId() == cpuId)
-                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         List<MotherBoard> mbList = StreamSupport
                 .stream(mbRepository.findAll().spliterator(), false)
@@ -59,30 +66,25 @@ public class FilterController {
                 .filter(mb -> hddType.startsWith(mb.getHddType().name()) || mb.getHddType().name().contains(hddType))
                 .filter(mb -> mb.getCaseFormFactor().name().contains(caseFormFactor))
                 .filter(mb -> mbId == 0 || mb.getId() == mbId)
-                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         List<Ram> ramList = StreamSupport
                 .stream(ramRepository.findAll().spliterator(), false)
                 .filter(ram -> ram.getRamType().name().contains(ramType))
                 .filter(r -> ramId == 0|| r.getId() == ramId)
-                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         List<Hdd> hddList = StreamSupport
                 .stream(hddRepository.findAll().spliterator(), false)
                 .filter(hdd -> hdd.getHddType().name().contains(hddType))
                 .filter(hdd -> hddId == 0 || hdd.getId() == hddId)
-                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         List<VideoCard> gpuList = StreamSupport
                 .stream(gpuRepository.findAll().spliterator(), false)
                 .filter(videoCard -> gpuId == 0 || videoCard.getId() == gpuId)
-                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         List<CaseBlock> caseList = StreamSupport
                 .stream(caseBlockRepository.findAll().spliterator(), false)
                 .filter(caseBlock -> caseBlockId == 0 || caseBlock.getId() == caseBlockId)
                 .filter(caseBlock -> caseBlock.getCaseFormFactor().name().contains(caseFormFactor))
-                .peek(p -> sum.add(p.getManufacturer().getPrice()))
                 .collect(Collectors.toList());
         model.addAttribute("cpuList", cpuList);
         model.addAttribute("mbList", mbList);
@@ -99,7 +101,7 @@ public class FilterController {
         model.addAttribute("hddId", hddId);
         model.addAttribute("gpuId", gpuId);
         model.addAttribute("caseBlockId", caseBlockId);
-        model.addAttribute("sumOrder", sum.stream().mapToInt(Integer::valueOf).sum());
+        model.addAttribute("sumOrder", priceList.stream().mapToInt(Integer::valueOf).sum());
         return "/filter";
     }
 }
