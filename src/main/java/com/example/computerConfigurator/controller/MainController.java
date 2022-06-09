@@ -36,7 +36,6 @@ public class MainController {
         model.addAttribute("cpuSockets", CpuSocket.values());
         model.addAttribute("caseFormsFactor", CaseFormFactor.values());
         model.addAttribute("hddTypes", HddType.values());
-        //model.addAttribute("caseTypes", CaseFormFactor.values());
         model.addAttribute("cpu",
                 cpuRepository.findFirstByOrderByIdDesc().orElse(new Cpu()));
         model.addAttribute("mboard",

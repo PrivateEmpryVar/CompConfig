@@ -29,7 +29,7 @@
                 ramId=${ramId},
                 hddId=${hddId},
                 caseBlockId=${caseBlockId},
-                mbId=${mbId})}">select</a></td>
+                mbId=${mbId})}">Выбрать</a></td>
             <td th:text="${c.cpuSocket}" />
             <span th:replace="fragments/manufacturer :: table(m = ${c})" />
         </tr>
@@ -53,7 +53,7 @@
                 ramId=${r.id},
                 hddId=${hddId},
                 caseBlockId=${caseBlockId},
-                mbId=${mbId})}">select</a></td>
+                mbId=${mbId})}">Выбрать</a></td>
             <td th:text="${r.ramType}" />
             <span th:replace="fragments/manufacturer :: table(m = ${r})" />
         </tr>
@@ -78,7 +78,7 @@
                 mbId=${mbId},
                 gpuId=${gpuId},
                 caseBlockId=${caseBlockId},
-                hddId=${h.id})}">select</a></td>
+                hddId=${h.id})}">Выбрать</a></td>
             <td th:text="${h.hddType}" />
             <td th:text="${h.size}"/>
             <span th:replace="fragments/manufacturer :: table(m = ${h})" />
@@ -102,7 +102,7 @@
                 ramId=${ramId},
                 mbId=${mbId},
                 caseBlockId=${caseBlockId},
-                hddId=${hddId})}">select</a></td>
+                hddId=${hddId})}">Выбрать</a></td>
             <td th:text="${g.size}"/>
             <span th:replace="fragments/manufacturer :: table(m = ${g})" />
         </tr>
@@ -125,7 +125,7 @@
                 ramId=${ramId},
                 mbId=${mbId},
                 gpuId=${gpuId},
-                hddId=${hddId})}">select</a></td>
+                hddId=${hddId})}">Выбрать</a></td>
             <td th:text="${c.caseFormFactor}" />
             <span th:replace="fragments/manufacturer :: table(m = ${c})" />
         </tr>
@@ -155,7 +155,7 @@
                 hddId=${hddId},
                 gpuId=${gpuId},
                 caseBlockId=${caseBlockId},
-                mbId=${mb.id})}">select</a></td>
+                mbId=${mb.id})}">Выбрать</a></td>
             <td th:text="${mb.caseFormFactor}" />
             <td th:text="${mb.cpuSocket}" />
             <td th:text="${mb.ramType}" />
